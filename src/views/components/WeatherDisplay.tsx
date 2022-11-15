@@ -1,7 +1,8 @@
+import { memo } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import type { Weather } from "../../types";
 
-const WeaterDisplay = () => {
+const WeaterDisplay = memo(() => {
   // 天気情報のstate取得
   const weatherData: Weather[] = useAppSelector(
     (state) => state.reducers.weatherReducer.weatherList
@@ -11,23 +12,23 @@ const WeaterDisplay = () => {
     (state) => state.reducers.timeReducer.time
   );
 
+  // 全天気情報から、選択された時間の天気情報のみfilterで取得
+  const selectedTimeWeather = weatherData.filter((oneWeather: Weather) => oneWeather.dt_txt === selectedTime)
+
   return (
     <>
-      {/* stateが初期状態(loading)でない場合(天気情報apiの取得ができた) */}
+    {/* 選択された時間の天気情報表示 */}
       {weatherData.length > 1 &&
-        // 天気情報と選択された時間のstateを比較し、選択された時間と一致する天気情報のみ表示
-        weatherData.map((oneWeather: Weather) => {
-          if (oneWeather.dt_txt === selectedTime) {
+        selectedTimeWeather.map((oneWeather: Weather) => {
             return (
               <div key={oneWeather.dt_txt}>
                 <p>{oneWeather.weather[0].main}</p>
                 <p>{oneWeather.main.temp}℃</p>
               </div>
             );
-          } else return null;
         })}
     </>
   );
-};
+});
 
 export default WeaterDisplay;

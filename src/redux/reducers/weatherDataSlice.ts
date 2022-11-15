@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { Weather } from "../../types";
 // import type {RootState} from './store'
 
+// 天気型定義
 interface WeatherState {
   weatherList: Weather[];
 }
 
+// 天気api情報初期値
 const initialState = {
   weatherList: [
     {
@@ -50,6 +52,7 @@ const initialState = {
   ],
 } as WeatherState;
 
+// 天気api用Slice
 const weatherDataSlice = createSlice({
   name: "weatherData",
   initialState,
