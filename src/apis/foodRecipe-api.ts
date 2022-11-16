@@ -11,7 +11,7 @@ const GetRecipe = async () => {
   const firstReqBlock = useRef(true);
 
   // Redux どのカテゴリーからレシピを取得するか、categoryIdをstateから取得
-  const reccomendRecipe = useAppSelector(
+  const reccomendCategoryId = useAppSelector(
     (state) => state.reducers.reccomendRecipeReducer.reccomendRecipeCategory
   );
 
@@ -26,14 +26,15 @@ const GetRecipe = async () => {
     //レシピ情報api取得(Reduxから取得したcategoryId使用)
     const getRecipeData = async () => {
       const recipeData = await fetch(
-        `https://app.rakuten.co.jp/services/api/Recipe/CategoryRanking/20170426?applicationId=1029602151620471388&categoryType=large&formatVersion=2&categoryId=${reccomendRecipe}`
+        `https://app.rakuten.co.jp/services/api/Recipe/CategoryRanking/20170426?applicationId=1029602151620471388&formatVersion=2&categoryId=${reccomendCategoryId}`
       );
       const getRecipes = await recipeData.json();
+
       // 取得したレシピ情報をReduxへ格納
       dispatch(setRecipeData(getRecipes.result));
     };
     getRecipeData();
-  }, [dispatch, reccomendRecipe]);
+  }, [dispatch, reccomendCategoryId]);
 };
 
 export default GetRecipe;
