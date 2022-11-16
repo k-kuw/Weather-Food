@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-    <p>hello</p>
+    <h1>おすすめ料理</h1>
     <WeatherInfo />
     <FoodInfo />
     </Provider>
