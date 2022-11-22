@@ -1,45 +1,41 @@
-import { useEffect, useState } from "react";
+import { memo } from "react";
 import { useAppSelector } from "../../redux/hooks";
+import "../../styles.scss";
+import ReccomendWeatherFood from "../../reccomendWeatherFood";
 
-const RecipeDisplay = () => {
-  // Redux レシピstate取得
-  const recipes = useAppSelector(
-    (state) => state.reducers.recipeReducer.recipeList
-  );
+//レシピ情報api取得＋state管理(Redux)
+const RecipeDisplay = memo(() => {
 
-  // TimeSelectButtonコンポーネントで取得した時間state取得
-  const selectedTime = useAppSelector(
-    (state) => state.reducers.timeReducer.time
-  );
+  // 選択された時間の天気を基におすすめレシピCategoryIdを取得処理
+  ReccomendWeatherFood();
 
-  // レシピデータ(配列)の4つのレシピのうち1つを格納用、このコンポーネントでのみの使用のためuseState利用
-  const [recipe, setRecipe]: [any, any] = useState([]);
 
-  // レシピデータ(配列)の4つのレシピのうち1つをランダム選択、ランダム選択が意図しないタイミングで起こるのを避けるため、useEffect内で第二引数を指定して使用
-  useEffect(() => {
-    const recipe: any = recipes[Math.floor(Math.random() * recipes.length)];
-    // 1レシピをrecipeへ設定
-    setRecipe(recipe);
-  }, [recipes, selectedTime]);
+// Redux レシピstate取得
+const recipe = useAppSelector(
+  (state) => state.reducers.recipeDataReducer.recipeList[Math.floor(Math.random() * state.reducers.recipeDataReducer.recipeList.length)]
+);
 
   return (
     <>
-      <p>レシピ</p>
       {/* stateからのレシピの表示 */}
       {recipe && (
-        <div key={recipe.foodImageUrl}>
-          <p>{recipe.recipeTitle}</p>
+        <div className="text-center info">
+          <h2 className="text-info">『おすすめ料理』</h2>
+          <p>{recipe.recipeTitle}！！</p>
           <a href={recipe.recipeUrl}>
             <img
               src={recipe.foodImageUrl}
-              alt={recipe.recipeTitle}
-              style={{ width: "200px" }}
+              alt=""
+              className="d-inline"
             />
           </a>
+          <p>{recipe.recipeDescription}</p>
+          <br />
+          <p>＊画像クリックでレシピの詳細画面へ</p>
         </div>
       )}
     </>
   );
-};
+});
 
 export default RecipeDisplay;

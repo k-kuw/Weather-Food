@@ -1,19 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import WeatherInfo from './views/gatheredComponents/WeatherInfo';
-import {Provider} from 'react-redux'
-import store from './redux/store'
-import FoodInfo from './views/gatheredComponents/FoodInfo';
+import "./styles.scss"
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import WeatherFood from "./views/pages/WeatherFood";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-    <h1>おすすめ料理</h1>
-    <WeatherInfo />
-    <FoodInfo />
+      <WeatherFood />
     </Provider>
   </React.StrictMode>
 );
