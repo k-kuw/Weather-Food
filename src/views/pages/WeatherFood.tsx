@@ -7,7 +7,6 @@ import Spinner from "react-bootstrap/Spinner";
 import RecipeDisplay from "../components/RecipeDisplay";
 import WeatherDisplay from "../components/WeatherDisplay";
 import { setRecipeData } from "../../redux/reducers/recipeDataSlice";
-import GetGiocode from "../components/Giocode";
 
 const WeatherFood = memo(() => {
   // recipeData用dispatch定義
@@ -28,23 +27,22 @@ const WeatherFood = memo(() => {
 
   // レシピ情報api取得
   useLayoutEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      if (firstReqBlock.current) {
+        firstReqBlock.current = false;
+        return;
+      }
+    }
     if (reccomendCategoryId !== "30") {
       // rakutenAPIが1秒間に1回以上リクエストを送るとエラーになるため、ReactStrictModeの2重apiリクエストに対して1回目を阻止
-      if (process.env.NODE_ENV === "development") {
-        if (firstReqBlock.current) {
-          firstReqBlock.current = false;
-          return;
-        }
-      }
+
       //レシピ情報api取得(Reduxから取得したcategoryId使用)
       const getRecipeData = async () => {
         const recipeData = await fetch(
           `https://app.rakuten.co.jp/services/api/Recipe/CategoryRanking/20170426?applicationId=1029602151620471388&formatVersion=2&categoryId=${reccomendCategoryId}`
         );
         const getRecipes = await recipeData.json();
-        console.log("getRecipes", getRecipes);
         dispatch(setRecipeData(getRecipes.result));
-        console.log("recipe-api", getRecipes.result);
       };
       getRecipeData();
     }
@@ -64,14 +62,13 @@ const WeatherFood = memo(() => {
     if (!loading) {
     }
     setTimeout(() => setLoading(false), 1000);
-    console.log(selectedTime);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTime]);
 
   return (
+    <>
     <div>
       <Header />
-      <GetGiocode />
       <TimeSelectButton />
       {selectedTime === "loading" ? (
         <p className="h3 text-info text-center content">
@@ -95,6 +92,7 @@ const WeatherFood = memo(() => {
         </>
       )}
     </div>
+    </>
   );
 });
 

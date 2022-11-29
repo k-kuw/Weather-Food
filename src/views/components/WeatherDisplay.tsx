@@ -23,7 +23,6 @@ const WeaterDisplay = memo(() => {
 
 
 
-  console.log(selectedTimeWeather)
 
   return (
     <>
