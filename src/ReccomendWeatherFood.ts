@@ -30,8 +30,6 @@ const ReccomendWeatherFood = () => {
   useEffect(() => {
     // 時間が選択された時、reccomendCategoryIdを選ぶ下記処理を行う
     if (selectedTime !== "loading") {
-      console.log("天気", selectedTimeWeather[0].weather[0].main);
-      console.log("気温", selectedTimeWeather[0].main.temp);
       const temperature = selectedTimeWeather[0].main.temp;
       // レシピapi情報取得用のcategoryId設定、気温による条件分岐
       // <  2  14-133 おかゆ・雑炊類

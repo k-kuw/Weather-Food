@@ -13,14 +13,19 @@ const TimeSelectButton = memo(() => {
   const dispatch = useAppDispatch();
 
   // 選択された時間のstate管理
-  const setSelectedTime: any = (selectedTimeButton: any) => {
-    console.log("se", selectedTimeButton);
+  const setSelectedTime = (selectedTimeButton: string) => {
     dispatch(setTime(selectedTimeButton));
   };
   // 天気情報データのstate取得
   const weatherData: Weather[] = useAppSelector(
     (state) => state.reducers.weatherReducer.weatherList
   );
+
+    // Giocodeのapi取得できたか確認用state
+    const getGiocode = useAppSelector(
+      (state) => state.reducers.locationReducer.location
+    );
+
   // 時間選択ボタンのチェックボックス判定用このコンポーネント内のみの使用のためuseState
   const [checked, setChecked] = useState("");
 
@@ -32,18 +37,19 @@ const TimeSelectButton = memo(() => {
     const getWeatherData = async () => {
       //天気情報api取得
       const res = await fetch(
-        "https://api.openweathermap.org/data/2.5/forecast?lat=35.69&lon=139.69&cnt=5&units=metric&lang=ja&appid=6c443236acc04da21c71a330f1d6366e"
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${getGiocode[0].lat}&lon=${getGiocode[0].lon}&cnt=5&units=metric&lang=ja&appid=6c443236acc04da21c71a330f1d6366e`
       );
       const _weatherData: WeatherData = await res.json();
       const cuttedOldWeather = _weatherData.list.splice(2, 3);
       // 取得した天気情報をReduxへ格納
       dispatch(setWeatherData(cuttedOldWeather));
+  
     };
     getWeatherData();
-  }, [dispatch]);
+  }, [dispatch, getGiocode]);
 
   // api時間を日本表記に変換
-  const translateTime = (apiTime: any) => {
+  const translateTime = (apiTime: string) => {
     const _translateTime = apiTime
       .replace(/-/, "年")
       .replace(/-/, "月")
