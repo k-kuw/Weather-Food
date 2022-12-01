@@ -5,9 +5,9 @@ This tool propose the food related to the weather and temperature.
 
 ## How It Works
 1. Choose your area.
-2. You can confirm weather information.
-3. Push today's food button.
-4. You get the food proposal.
+2. Area set.
+3. Select and push the time button.
+4. You get the weather information and food proposal.
 
 ## Features
 //TODO add the features
