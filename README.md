@@ -1,4 +1,4 @@
-# Wheather Food
+# Weather Food
 
 This tool help you to choose the food when you cannot do yourself.
 This tool propose the food related to the weather and temperature.
